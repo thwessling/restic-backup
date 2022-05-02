@@ -9,7 +9,7 @@ import statusFile
 
 
 config = configparser.ConfigParser()
-config.read('config.cfg')
+config.read('/home/pi/restic-backup/config.cfg')
 REPOSITORY = config['BACKUP']['REPOSITORY']
 DIRECTORY_TO_BACKUP = config['BACKUP']['DIRECTORY_TO_BACKUP']
 
