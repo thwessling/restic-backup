@@ -52,6 +52,6 @@ if __name__ == "__main__":
         #TODO: Abort
     output=backupFiles()
     statusString = parseOutput.parseProcessStatusOutput(output)
-    statusFile.writeBackupStatus(statusString)
+    statusFile.writeToFile(statusString)
     statusFile.close()
 
