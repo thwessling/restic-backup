@@ -11,7 +11,7 @@ REPOSITORY = config['BACKUP']['REPOSITORY']
 DIRECTORY_TO_BACKUP = config['BACKUP']['DIRECTORY_TO_BACKUP']
 
 def isGoogleMounted():
-    numOfFiles = len([name for name in os.listdir('/home/pi/mnt/gdrive/') if os.path.isfile(name)])
+    numOfFiles = len(os.listdir('/home/pi/mnt/gdrive/'))
     if numOfFiles > 0:
         print("Google drive mounted with " + str(numOfFiles) + " files")
         return True
@@ -26,7 +26,7 @@ def mountGoogleDrive():
     time.sleep(30)
 
 def backupFiles():
-    output = subprocess.run(["restic", "-r", REPOSITORY, "--verbose=2", "backup", "", "--json"], capture_output=True)
+    output = subprocess.run(["restic", "-r", REPOSITORY, "--verbose=2", "backup", "--json", DIRECTORY_TO_BACKUP], capture_output=True)
     print("Backup output:") 
     print(output)
 
