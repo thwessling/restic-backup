@@ -34,12 +34,12 @@ def mountGoogleDrive():
 
 def backupFiles():
     output = subprocess.run(["restic", "-r", REPOSITORY, "--verbose=2", "backup", "--json", DIRECTORY_TO_BACKUP], capture_output=True)
+    print(output)
     return output
 
 
 
 if __name__ == "__main__":
-    print(os.environ["B2_ACCOUNT_ID"])
     statusFile.initOutputFile()
     if not isGoogleMounted():
         mountGoogleDrive()

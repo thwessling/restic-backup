@@ -20,13 +20,27 @@ def parseProcessStatusOutput(completedProcess):
         statusString = statusString + "\n" + backupOutput
     return statusString 
 
+def getFilesByStatus(status, statusSymbol, outputJsons):
+    statusFiles = ""
+    for jsonPart in outputJsons:
+        outputJson = json.loads(jsonPart)
+        if outputJson['action'] == status:
+            statusFiles = statusSymbol + " " + outputJson['item'] + " (size: " + outputJson['data_size'] + ")\n"
+    return statusFiles
+
+
 def parseBackupOutput(standardOutJson):
+    backupOutputString = ""
     standardOutJsons = standardOutJson.split()
     for jsonPart in standardOutJsons:
         outputJson = json.loads(jsonPart)
+        json_formatted_str = json.dumps(outputJson, indent=4)
         if outputJson['message_type'] == "summary":
-            return f"Summary: {outputJson}"
+            backupOutputString = f"Summary: {json_formatted_str}\n"
     
+    backupOutputString = backupOutputString + getFilesByStatus("new", "+", standardOutJsons)
+    backupOutputString = backupOutputString + getFilesByStatus("changed", "o", standardOutJsons)
+
     #print(outputJson)
 
 
