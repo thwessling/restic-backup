@@ -5,8 +5,8 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
-REPOSITORY = config['REPOSITORY']
-DIRECTORY_TO_BACKUP = config['DIRECTORY_TO_BACKUP']
+REPOSITORY = config['BACKUP']['REPOSITORY']
+DIRECTORY_TO_BACKUP = config['BACKUP']['DIRECTORY_TO_BACKUP']
 
 def isGoogleMounted():
     numOfFiles = len([name for name in os.listdir('/home/pi/mnt/gdrive/') if os.path.isfile(name)])
