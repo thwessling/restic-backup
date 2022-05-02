@@ -24,7 +24,7 @@ def getFilesByStatus(status, statusSymbol, outputJsons):
     statusFiles = ""
     for jsonPart in outputJsons:
         outputJson = json.loads(jsonPart)
-        if outputJson['action'] == status:
+        if "action" in outputJson and outputJson['action'] == status:
             statusFiles = statusSymbol + " " + outputJson['item'] + " (size: " + outputJson['data_size'] + ")\n"
     return statusFiles
 
@@ -40,6 +40,7 @@ def parseBackupOutput(standardOutJson):
     
     backupOutputString = backupOutputString + getFilesByStatus("new", "+", standardOutJsons)
     backupOutputString = backupOutputString + getFilesByStatus("changed", "o", standardOutJsons)
+    backupOutputString = backupOutputString + getFilesByStatus("removed", "-", standardOutJsons)
 
     #print(outputJson)
 
