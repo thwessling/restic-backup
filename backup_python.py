@@ -33,7 +33,7 @@ def mountGoogleDrive():
     time.sleep(30)
 
 def backupFiles():
-    output = subprocess.run(["restic", "-r", REPOSITORY, "--verbose=2", "backup", "--json", DIRECTORY_TO_BACKUP], capture_output=True)
+    output = subprocess.run(["restic", "-r", REPOSITORY, "--verbose=2", "backup", DIRECTORY_TO_BACKUP], capture_output=True)
     print(output)
     return output
 
@@ -51,7 +51,7 @@ if __name__ == "__main__":
         statusFile.writeToFile("Abort.")
         #TODO: Abort
     output=backupFiles()
-    statusString = parseOutput.parseProcessStatusOutput(output)
-    statusFile.writeToFile(statusString)
+    #statusString = parseOutput.parseProcessStatusOutput(output)
+    statusFile.writeToFile(output)
     statusFile.close()
 
