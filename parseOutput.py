@@ -21,8 +21,13 @@ def parseProcessStatusOutput(completedProcess):
     return parseProcessStatusOutput 
 
 def parseBackupOutput(standardOutJson):
-    outputJson = json.loads(standardOutJson)
-    print(outputJson)
+    standardOutJsons = standardOutJson.split()
+    for jsonPart in standardOutJsons:
+        outputJson = json.loads(jsonPart)
+        if outputJson['message_type'] == "summary":
+            return f"Summary: {outputJson}"
+    
+    #print(outputJson)
 
 
 def createStatusMail(statusFile, completedProcess):

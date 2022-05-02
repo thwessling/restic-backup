@@ -34,9 +34,8 @@ def backupFiles():
 
 if __name__ == "__main__":
     print(os.environ["B2_ACCOUNT_ID"])
-    isGoogleMounted()
-    mountGoogleDrive()
-
+    if not isGoogleMounted():
+        mountGoogleDrive()
     if isGoogleMounted():
         print("Proceed.")
     else:
