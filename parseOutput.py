@@ -1,6 +1,5 @@
 from sqlite3 import Timestamp
 import subprocess
-import datetime
 import json
 
 def parseProcessStatusOutput(completedProcess):
@@ -18,7 +17,8 @@ def parseProcessStatusOutput(completedProcess):
         statusString = statusString + f". STDERR: {completedProcess.stderr}"
     else:
         backupOutput = parseBackupOutput(completedProcess.stdout)
-    return parseProcessStatusOutput 
+        statusString = statusString + "\n" + backupOutput
+    return statusString 
 
 def parseBackupOutput(standardOutJson):
     standardOutJsons = standardOutJson.split()
@@ -29,16 +29,6 @@ def parseBackupOutput(standardOutJson):
     
     #print(outputJson)
 
-
-def createStatusMail(statusFile, completedProcess):
-    now = datetime.datetime.now()
-    currentdate = now.strftime("%Y-%m-%d %H:%M:%S")
-    timeStamp = f"Starting backup: {currentdate}"
-    statusText = parseProcessStatusOutput(completedProcess)
-
-    with open('statusFile', "w") as f:
-        f.write(timeStamp + "\n")
-        f.write(statusText)
 
 
     
