@@ -2,6 +2,8 @@
 import os, os.path
 import subprocess
 import configparser
+import time
+
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
@@ -21,11 +23,12 @@ def mountGoogleDrive():
     output = subprocess.run(["rclone", "mount", "--allow-other", "GoogleDrive:", "/home/pi/mnt/gdrive/", "--daemon"], capture_output=True)
     print("Google Drive mouting:")
     print(output)
+    time.sleep(30)
 
 def backupFiles():
     output = subprocess.run(["restic", "-r", REPOSITORY, "--verbose=2", "backup", "", "--json"], capture_output=True)
     print("Backup output:") 
-    print(output)    
+    print(output)
 
 if __name__ == "__main__":
     print(os.environ["B2_ACCOUNT_ID"])
