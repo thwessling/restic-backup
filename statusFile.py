@@ -1,13 +1,22 @@
 
 import datetime
 import configparser
+from os.path import exists
+from shutil import copyfile
 
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
 
 
+
 STATUSFILE = config['BACKUP']['STATUSFILE']
+
+
+if exists(STATUSFILE):
+    now = datetime.datetime.now()
+    currentdate = now.strftime("%Y-%m-%d")
+    copyfile(STATUSFILE, STATUSFILE + "-" + currentdate)
 
 f = open(STATUSFILE, "w")
 
