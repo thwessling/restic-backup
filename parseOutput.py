@@ -1,6 +1,5 @@
-from sqlite3 import Timestamp
 import subprocess
-import json
+import re
 
 def parseProcessStatusOutput(completedProcess):
     '''
@@ -17,33 +16,17 @@ def parseProcessStatusOutput(completedProcess):
         statusString = statusString + f". STDERR: {completedProcess.stderr}"
     else:
         backupOutput = parseBackupOutput(completedProcess.stdout)
-        statusString = statusString + "\n" + backupOutput
+        statusString = statusString + "\n\n" + backupOutput
     return statusString 
 
-def getFilesByStatus(status, statusSymbol, outputJsons):
-    statusFiles = ""
-    for jsonPart in outputJsons:
-        outputJson = json.loads(jsonPart)
-        if "action" in outputJson and outputJson['action'] == status:
-            statusFiles = statusSymbol + " " + outputJson['item'] + " (size: " + outputJson['data_size'] + ")\n"
-    return statusFiles
 
 
-def parseBackupOutput(standardOutJson):
-    backupOutputString = ""
-    standardOutJsons = standardOutJson.split()
-    for jsonPart in standardOutJsons:
-        outputJson = json.loads(jsonPart)
-        json_formatted_str = json.dumps(outputJson, indent=4)
-        if outputJson['message_type'] == "summary":
-            backupOutputString = f"Summary: {json_formatted_str}\n"
-    
-    backupOutputString = backupOutputString + getFilesByStatus("new", "+", standardOutJsons)
-    backupOutputString = backupOutputString + getFilesByStatus("changed", "o", standardOutJsons)
-    backupOutputString = backupOutputString + getFilesByStatus("removed", "-", standardOutJsons)
+def parseBackupOutput(backupOutput):
+    backupOutputStringLines = backupOutput.decode("utf-8").split("\n")
 
-    #print(outputJson)
+    filteredLines = [line for line in backupOutputStringLines if re.match("unchanged.*", line) != None]
 
+    return "\n".join(filteredLines)
 
 
     
