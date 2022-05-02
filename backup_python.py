@@ -56,10 +56,10 @@ if __name__ == "__main__":
     statusString = parseOutput.parseProcessStatusOutput(output)
     statusFile.writeToFile(statusString)
 
-    output = pruneBackups()
-    statusString = parseOutput.parseProcessStatusOutput(output)
-    statusFile.writeToFile(statusString)
-    statusFile.close()
+#    output = pruneBackups()
+#    statusString = parseOutput.parseProcessStatusOutput(output)
+#    statusFile.writeToFile(statusString)
+#    statusFile.close()
     content = statusFile.getStatusFileContent()
     mail.sendMail(content)
 

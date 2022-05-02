@@ -18,5 +18,7 @@ def sendMail(message):
     context = ssl.create_default_context()
 
     with smtplib.SMTP_SSL(MAILSERVER, 465, context=context) as server:
+        print(STATUSMAILADDRESS)
+        print(password)
         server.login(STATUSMAILADDRESS, password)
         server.sendmail(STATUSMAILADDRESS, STATUSMAILADDRESS, message)
