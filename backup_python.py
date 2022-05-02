@@ -1,14 +1,17 @@
 
+from asyncio import open_unix_connection
 import os, os.path
 import subprocess
 import configparser
 import time
+import parseOutput
 
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
 REPOSITORY = config['BACKUP']['REPOSITORY']
 DIRECTORY_TO_BACKUP = config['BACKUP']['DIRECTORY_TO_BACKUP']
+STATUSFILE = config['BACKUP']['STATUSFILE']
 
 def isGoogleMounted():
     numOfFiles = len(os.listdir('/home/pi/mnt/gdrive/'))
@@ -27,8 +30,7 @@ def mountGoogleDrive():
 
 def backupFiles():
     output = subprocess.run(["restic", "-r", REPOSITORY, "--verbose=2", "backup", "--json", DIRECTORY_TO_BACKUP], capture_output=True)
-    print("Backup output:") 
-    print(output)
+    return output
 
 if __name__ == "__main__":
     print(os.environ["B2_ACCOUNT_ID"])
@@ -40,5 +42,6 @@ if __name__ == "__main__":
     else:
         print("Abort.")
         #TODO: Abort
-    backupFiles()
+    output=backupFiles()
+    parseOutput.createStatusMail(STATUSFILE,output)
     
