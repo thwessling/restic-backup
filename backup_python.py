@@ -40,7 +40,7 @@ def backupFiles():
 
 
 if __name__ == "__main__":
-    statusFile.initOutputFile()
+    statusFile.initOutputFile(REPOSITORY, DIRECTORY_TO_BACKUP)
     if not isGoogleMounted():
         mountGoogleDrive()
     if isGoogleMounted():
