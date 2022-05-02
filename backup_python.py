@@ -1,7 +1,5 @@
 
 import os, os.path
-from turtle import back
-from unittest import main
 import subprocess
 import configparser
 
