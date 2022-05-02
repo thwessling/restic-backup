@@ -1,12 +1,10 @@
-
-from asyncio import open_unix_connection
 import os, os.path
 import subprocess
 import configparser
 import time
 import parseOutput
 import statusFile
-
+import mail
 
 config = configparser.ConfigParser()
 config.read('/home/pi/restic-backup/config.cfg')
@@ -61,7 +59,7 @@ if __name__ == "__main__":
     output = pruneBackups()
     statusString = parseOutput.parseProcessStatusOutput(output)
     statusFile.writeToFile(statusString)
-
-
     statusFile.close()
+    content = statusFile.getStatusFileContent()
+    mail.sendMail(content)
 

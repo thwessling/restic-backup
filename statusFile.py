@@ -25,8 +25,8 @@ def initOutputFile(repo, directory):
     now = datetime.datetime.now()
     currentdate = now.strftime("%Y-%m-%d %H:%M:%S")
 
-    f.write("To: info@thwessling.de\n")
-    f.write("From: info@thwessling.de\n")
+    #f.write("To: info@thwessling.de\n")
+    #f.write("From: info@thwessling.de\n")
     f.write("Subject: Restic Log for " + currentdate + "\n\n")
 
 
@@ -47,3 +47,8 @@ def writeToFile(statusText, includeTime=False):
 
 def close():
     f.close()
+
+def getStatusFileContent():
+    with open(STATUSFILE, "r") as x:
+        content = x.read()
+    return content
