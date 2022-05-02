@@ -24,7 +24,7 @@ def parseProcessStatusOutput(completedProcess):
 def parseBackupOutput(backupOutput):
     backupOutputStringLines = backupOutput.decode("utf-8").split("\n")
 
-    filteredLines = [line for line in backupOutputStringLines if re.match("unchanged.*", line) != None]
+    filteredLines = [line for line in backupOutputStringLines if re.match("unchanged.*", line) == None]
 
     return "\n".join(filteredLines)
 
