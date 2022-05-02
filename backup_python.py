@@ -59,7 +59,6 @@ if __name__ == "__main__":
 #    output = pruneBackups()
 #    statusString = parseOutput.parseProcessStatusOutput(output)
 #    statusFile.writeToFile(statusString)
-#    statusFile.close()
-    content = statusFile.getStatusFileContent()
-    mail.sendMail(content)
+    statusFile.close()
+    mail.sendMail()
 
