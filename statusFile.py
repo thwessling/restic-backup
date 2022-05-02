@@ -21,9 +21,13 @@ def initOutputFile(repo, directory):
     f.write(timeStamp + "\n")
 
 
-def writeToFile(statusText):
-    f.write(statusText + "\n")
-
+def writeToFile(statusText, includeTime=False):
+    if includeTime:
+        now = datetime.datetime.now()
+        currentdate = now.strftime("%H:%M:%S")
+        f.write(f"{currentdate} {statusText} \n")
+    else:
+        f.write(statusText + "\n\n")
 
 def close():
     f.close()

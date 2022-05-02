@@ -17,7 +17,7 @@ def parseProcessStatusOutput(completedProcess):
     else:
         backupOutput = parseBackupOutput(completedProcess.stdout)
         statusString = statusString + "\n\n" + backupOutput
-    return statusString 
+    return statusString
 
 
 
