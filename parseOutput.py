@@ -3,7 +3,8 @@ import re
 
 def parseProcessStatusOutput(completedProcess):
     '''
-    Return status information about process in pretty string.
+    Return status information about process in pretty string and the status code in a tuple:
+    (statusString, statusCode)
     '''
     statusCode = completedProcess.returncode
 
@@ -15,18 +16,23 @@ def parseProcessStatusOutput(completedProcess):
     if statusCode != 0:
         statusString = statusString + f". STDERR: {completedProcess.stderr}"
     else:
-        backupOutput = parseBackupOutput(completedProcess.stdout)
-        statusString = statusString + "\n\n" + backupOutput
-    return statusString
+        statusString = statusString + "\n\n"
+    return (statusString,statusCode)
 
 
 
-def parseBackupOutput(backupOutput):
-    backupOutputStringLines = backupOutput.decode("utf-8").split("\n")
+def parseBackupOutput(backupCommandOutput):
+    statusParse = parseProcessStatusOutput(backupCommandOutput)
+    statusText = statusParse[0]
+    statusCode = statusParse[1]
+   
+    if statusCode == 0:
+        backupOutput = backupCommandOutput.stdout
+        backupOutputStringLines = backupOutput.decode("utf-8").split("\n")
+        filteredLines = [line for line in backupOutputStringLines if re.match("unchanged.*", line) == None]
+        statusText = statusText + "\n".join(filteredLines)
 
-    filteredLines = [line for line in backupOutputStringLines if re.match("unchanged.*", line) == None]
-
-    return "\n".join(filteredLines)
+    return statusText
 
 
     

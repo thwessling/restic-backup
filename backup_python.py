@@ -1,5 +1,6 @@
 import os, os.path
 import subprocess
+import sys
 import configparser
 import time
 import parseOutput
@@ -26,8 +27,9 @@ def mountGoogleDrive():
     output = subprocess.run(["rclone", "mount", "--allow-other", "GoogleDrive:", "/home/pi/mnt/gdrive/", "--daemon"], capture_output=True)
     print("Google Drive mounting ")
     print(output)
+    statusString = parseOutput.parseProcessStatusOutput(output)
     statusFile.writeToFile("Google Drive mouting:", includeTime=True)
-    statusFile.writeToFile(output + "\n")
+    statusFile.writeToFile(statusString[0] + "\n")
     time.sleep(30)
 
 def backupFiles():
@@ -51,14 +53,16 @@ if __name__ == "__main__":
     else:
         print("Abort.")
         statusFile.writeToFile("Abort.", includeTime=True)
-        #TODO: Abort
+        mail.sendMail()
+        sys.exit(1)
     output=backupFiles()
-    statusString = parseOutput.parseProcessStatusOutput(output)
+    statusString = parseOutput.parseBackupOutput(output)
+
     statusFile.writeToFile(statusString)
 
-#    output = pruneBackups()
-#    statusString = parseOutput.parseProcessStatusOutput(output)
-#    statusFile.writeToFile(statusString)
+    output = pruneBackups()
+    statusString = parseOutput.parseBackupOutput(output)
+    statusFile.writeToFile(statusString)
     statusFile.close()
     mail.sendMail()
 
